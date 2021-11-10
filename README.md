@@ -10,4 +10,4 @@
 В проекте используется HTML, CSS и JS. Версия языка - "RU"
 
 
-https://elmanaliev.github.io/russian-travel/
+https://elmanaliev.github.io/mesto/
