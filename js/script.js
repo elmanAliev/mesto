@@ -114,9 +114,9 @@ initialCards.forEach (function (item) {
 
 //добавление карточек из попапа
 function addCard () {
-    const 
+    
        
-    profileName.textContent = placeInput.value;  // в текстовое значение profileName и profileJob записываются
+    profileNametextContent = placeInput.value;  // в текстовое значение profileName и profileJob записываются
     profileJob.textContent = urlInput.value;    // значения из полей ввода nameInput и jobInput
     
     closePopup(popupAdd);    // чтобы попап закрылся, после нажатия на СОХРАНИТЬ, удаляем у него класс popup_opened
