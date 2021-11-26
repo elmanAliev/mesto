@@ -1,5 +1,6 @@
 const popupEdit = document.querySelector ('.popup_type_edit'); // поместили в переменную попап
 const popupAdd = document.querySelector ('.popup_type_add');  // поместили в переменную попап
+const popupTypeImg = document.querySelector ('.popup_type_img');  // поместили в переменную попап
 
 const nameInput = document.querySelector('.popup__input_type_name');  // поместили в переменную поле ввода
 const jobInput = document.querySelector('.popup__input_type_job');  // поместили в переменную поле ввода
@@ -9,6 +10,9 @@ const urlInput = document.querySelector('.popup__input_type_url');  // поме�
 
 const profileName = document.querySelector('.profile__name'); // поместили в переменную тег с классом profile__name
 const profileJob = document.querySelector('.profile__job');  // поместили в переменную тег с классом profile__job
+
+const popupImg = popupTypeImg.querySelector ('.popup__img'); // поместили в переменную картинку попапа
+const popupImgText = popupTypeImg.querySelector ('.popup__img-text'); // поместили в переменную картинку попапа
 
 const formElement = document.querySelector('.popup__container');  // Находим форму в DOM
 const buttonAdd = document.querySelector ('.profile__button_type_add');  // поместили в переменную кнопку добавления
@@ -26,20 +30,19 @@ function closePopup(typePopup) {
     typePopup.classList.remove ('popup_opened');  // удаляем у попапа класс popup_opened
 }
 
+
 // на кнопку buttonEdit ставим слушатель (при клике - запуск ф-ции openPopup)
 buttonEdit.addEventListener ('click', function() {
     openPopup (popupEdit);  // в аргументе передаем тип попапа
     nameInput.value = profileName.textContent;  // при клике на кнопку в значения полей ввода помещаем 
     jobInput.value = profileJob.textContent;    // текстовые значения нах-ся в profileName и profileJob    
 }); 
-
 // на кнопку buttonAdd ставим слушатель (при клике - запуск ф-ции openPopup)
 buttonAdd.addEventListener ('click', function() {
     placeInput.value = '';  // при появлении попапа поля будут пустые
     urlInput.value = '';  // при появлении попапа поля будут пустые
     openPopup(popupAdd);
 }); 
-
 // на все кнопки buttonClose ставим слушатель (при клике - запуск ф-ции closePopup)
 for (i=0; i<buttonClose.length; i++) {
     buttonClose[i].addEventListener ('click', function(evt) {
@@ -64,7 +67,8 @@ function formSubmitHandler (evt) {
 // Прикрепляем обработчик к форме: он будет следить за событием “submit” - «отправка»
 formElement.addEventListener('submit', formSubmitHandler); 
 
-//добавление карточек из массива
+
+//массив добавляемых карточек
 const initialCards = [
     {
       name: 'Архыз',
@@ -92,6 +96,7 @@ const initialCards = [
     }
 ]; 
 
+
 //добавление карточек из массива
 initialCards.forEach (function (item) {
     const elements = document.querySelector('.elements'); // поместили контейнер elements в переменную
@@ -102,6 +107,24 @@ initialCards.forEach (function (item) {
     addImage.src = item.link;
     addName.textContent = item.name;
     elements.append(addElement);
+
+    // лайк карточкам
+    const buttonLike = addElement.querySelector('.element__like');
+    buttonLike.addEventListener('click', function(evt) {
+        evt.target.classList.toggle ('element__like_active');
+    });
+    // удаление карточек
+    const buttonTrash = addElement.querySelector('.element__trash');
+    buttonTrash.addEventListener('click', function() {
+        const elementItem = buttonTrash.closest('.element');
+        elementItem.remove();
+    });   
+    // открытие попапа картинки
+    addImage.addEventListener ('click', function () {
+        openPopup(popupTypeImg);
+        popupImg.src = addImage.src;
+        popupImgText.textContent = addName.textContent;  
+    });
 });
 
 //добавление карточек из попапа
@@ -114,42 +137,26 @@ function addCard() {
     addImage.src = urlInput.value;  // в текстовое значение profileName и profileJob записываются
     addName.textContent = placeInput.value;    // значения из полей ввода nameInput и jobInput
     elements.prepend(addElement);
+    
+    // лайк карточкам
+    const buttonLike = addElement.querySelector('.element__like');
+    buttonLike.addEventListener('click', function(evt) {
+        evt.target.classList.toggle ('element__like_active');
+    });
+    // удаление карточек
+    const buttonTrash = addElement.querySelector('.element__trash');
+    buttonTrash.addEventListener('click', function() {
+        const elementItem = buttonTrash.closest('.element');
+        elementItem.remove();
+    });
+    // открытие попапа картинки
+    addImage.addEventListener ('click', function () {
+        openPopup(popupTypeImg);
+        popupImg.src = addImage.src;
+        popupImgText.textContent = addName.textContent;  
+    });
+
     closePopup(popupAdd);   // чтобы попап закрылся, после нажатия на СОХРАНИТЬ, удаляем у него класс popup_opened
 }
 // на кнопку buttonCreate ставим слушатель
 buttonCreate.addEventListener('click', addCard);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// лайк
-let likeButtons = document.querySelectorAll ('.element__like');
-
-for (let i=0; i<likeButtons.length; i++) {
-    likeButtons[i].addEventListener ('click', function () {
-        likeButtons[i].classList.toggle ('element__like_active');  
-    });
-};
-
-// попап с картинкой
-let popupTypeImg = document.querySelector ('.popup_type_img');
-let imgElements = document.querySelectorAll ('.element__image');
-let popupImg = document.querySelector ('.popup__img');
-for (let i=0; i<imgElements.length; i++) {
-    imgElements[i].addEventListener ('click', function () {
-        popupTypeImg.classList.add ('popup_opened');
-        popupImg.src=imgElements[i].src;
-    });
-};
