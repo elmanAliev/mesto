@@ -1,21 +1,21 @@
-let popupEdit = document.querySelector ('.popup_type_edit'); // поместили в переменную попап
-let buttonEdit = document.querySelector ('.profile__button_type_edit'); // поместили в переменную кнопку EDIT
+const popupEdit = document.querySelector ('.popup_type_edit'); // поместили в переменную попап
+const popupAdd = document.querySelector ('.popup_type_add');  // поместили в переменную попап
 
-let nameInput = document.querySelector('.popup__input_type_name');  // поместили в переменную поле ввода
-let jobInput = document.querySelector('.popup__input_type_job');  // поместили в переменную поле ввода
+const nameInput = document.querySelector('.popup__input_type_name');  // поместили в переменную поле ввода
+const jobInput = document.querySelector('.popup__input_type_job');  // поместили в переменную поле ввода
 
-let profileName = document.querySelector('.profile__name'); // поместили в переменную тег с классом profile__name
-let profileJob = document.querySelector('.profile__job');  // поместили в переменную тег с классом profile__job
+const placeInput = document.querySelector('.popup__input_type_place');  // поместили в переменную поле ввода
+const urlInput = document.querySelector('.popup__input_type_url');  // поместили в переменную поле ввода
 
-let buttonClose = document.querySelectorAll ('.popup__button_type_close');  // поместили в переменную кнопку закрытия
-let formElement = document.querySelector('.popup__container');  // Находим форму в DOM
+const profileName = document.querySelector('.profile__name'); // поместили в переменную тег с классом profile__name
+const profileJob = document.querySelector('.profile__job');  // поместили в переменную тег с классом profile__job
 
-let popupAdd = document.querySelector ('.popup_type_add');
-let buttonAdd = document.querySelector ('.profile__button_type_add');
-let buttonSave = document.querySelector ('.popup__button_type_save');
+const formElement = document.querySelector('.popup__container');  // Находим форму в DOM
+const buttonAdd = document.querySelector ('.profile__button_type_add');  // поместили в переменную кнопку добавления
+const buttonEdit = document.querySelector ('.profile__button_type_edit'); // поместили в переменную кнопку EDIT
+const buttonClose = document.querySelectorAll ('.popup__button_type_close');  // поместили в переменную кнопку закрытия
+const buttonCreate = document.querySelector ('.popup__button_type_create');  // поместили в переменную кнопку добавления
 
-let placeInput = document.querySelector('.popup__input_type_place');  // поместили в переменную поле ввода
-let urlInput = document.querySelector('.popup__input_type_url');  // поместили в переменную поле ввода
 
 // функция открытия попапа
 function openPopup(typePopup) {
@@ -35,10 +35,10 @@ buttonEdit.addEventListener ('click', function() {
 
 // на кнопку buttonAdd ставим слушатель (при клике - запуск ф-ции openPopup)
 buttonAdd.addEventListener ('click', function() {
+    placeInput.value = '';  // при появлении попапа поля будут пустые
+    urlInput.value = '';  // при появлении попапа поля будут пустые
     openPopup(popupAdd);
 }); 
-
-
 
 // на все кнопки buttonClose ставим слушатель (при клике - запуск ф-ции closePopup)
 for (i=0; i<buttonClose.length; i++) {
@@ -51,8 +51,6 @@ for (i=0; i<buttonClose.length; i++) {
 }
 
 
-
-
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
 function formSubmitHandler (evt) {
@@ -63,12 +61,8 @@ function formSubmitHandler (evt) {
     
     closePopup(popupEdit);    // чтобы попап закрылся, после нажатия на СОХРАНИТЬ, удаляем у него класс popup_opened
 }
-// Прикрепляем обработчик к форме:
-// он будет следить за событием “submit” - «отправка»
+// Прикрепляем обработчик к форме: он будет следить за событием “submit” - «отправка»
 formElement.addEventListener('submit', formSubmitHandler); 
-
-
-
 
 //добавление карточек из массива
 const initialCards = [
@@ -98,9 +92,7 @@ const initialCards = [
     }
 ]; 
 
-
-
-
+//добавление карточек из массива
 initialCards.forEach (function (item) {
     const elements = document.querySelector('.elements'); // поместили контейнер elements в переменную
     const elementTemplate = document.querySelector('#element').content; // поместили template в переменную
@@ -113,17 +105,19 @@ initialCards.forEach (function (item) {
 });
 
 //добавление карточек из попапа
-function addCard () {
-    
-       
-    profileNametextContent = placeInput.value;  // в текстовое значение profileName и profileJob записываются
-    profileJob.textContent = urlInput.value;    // значения из полей ввода nameInput и jobInput
-    
-    closePopup(popupAdd);    // чтобы попап закрылся, после нажатия на СОХРАНИТЬ, удаляем у него класс popup_opened
+function addCard() {
+    const elements = document.querySelector('.elements'); // поместили контейнер elements в переменную
+    const elementTemplate = document.querySelector('#element').content; // поместили template в переменную
+    const addElement = elementTemplate.querySelector('.element').cloneNode(true); // клонируем содержимое template
+    const addImage = addElement.querySelector('.element__image');
+    const addName = addElement.querySelector('.element__name');   
+    addImage.src = urlInput.value;  // в текстовое значение profileName и profileJob записываются
+    addName.textContent = placeInput.value;    // значения из полей ввода nameInput и jobInput
+    elements.prepend(addElement);
+    closePopup(popupAdd);   // чтобы попап закрылся, после нажатия на СОХРАНИТЬ, удаляем у него класс popup_opened
 }
-// Прикрепляем обработчик к форме:
-buttonSave.addEventListener('click', addCard); 
-
+// на кнопку buttonCreate ставим слушатель
+buttonCreate.addEventListener('click', addCard);
 
 
 
