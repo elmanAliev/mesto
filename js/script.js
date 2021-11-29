@@ -2,6 +2,8 @@ const popupEdit = document.querySelector ('.popup_type_edit'); // помести
 const popupAdd = document.querySelector ('.popup_type_add');  // поместили в переменную попап
 const popupTypeImg = document.querySelector ('.popup_type_img');  // поместили в переменную попап
 
+const elements = document.querySelector('.elements'); // поместили контейнер elements в переменную
+
 const nameInput = document.querySelector('.popup__input_type_name');  // поместили в переменную поле ввода
 const jobInput = document.querySelector('.popup__input_type_job');  // поместили в переменную поле ввода
 
@@ -17,7 +19,7 @@ const popupImgText = popupTypeImg.querySelector ('.popup__img-text'); // пом�
 const formElement = document.querySelector('.popup__container');  // Находим форму в DOM
 const buttonAdd = document.querySelector ('.profile__button_type_add');  // поместили в переменную кнопку добавления
 const buttonEdit = document.querySelector ('.profile__button_type_edit'); // поместили в переменную кнопку EDIT
-const buttonClose = document.querySelectorAll ('.popup__button_type_close');  // поместили в переменную кнопку закрытия
+const buttonsClose = document.querySelectorAll ('.popup__button_type_close');  // поместили в переменную кнопку закрытия
 const buttonCreate = document.querySelector ('.popup__button_type_create');  // поместили в переменную кнопку добавления
 
 
@@ -44,12 +46,10 @@ buttonAdd.addEventListener ('click', function() {
     openPopup(popupAdd);
 }); 
 // на все кнопки buttonClose ставим слушатель (при клике - запуск ф-ции closePopup)
-for (i=0; i<buttonClose.length; i++) {
-    buttonClose[i].addEventListener ('click', function(evt) {
-        const eventTarget = evt.target;
-        const parentEventTarget = eventTarget.parentElement;
-        const parentTwoEventTarget = parentEventTarget.parentElement;
-        closePopup(parentTwoEventTarget);
+for (i=0; i<buttonsClose.length; i++) {
+    buttonsClose[i].addEventListener ('click', function(evt) {
+        const popup = evt.target.closest('.popup')
+        closePopup(popup);
     });
 }
 
@@ -68,45 +68,21 @@ function formSubmitHandler (evt) {
 formElement.addEventListener('submit', formSubmitHandler); 
 
 
-//массив добавляемых карточек
-const initialCards = [
-    {
-      name: 'Архыз',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-    },
-    {
-      name: 'Челябинская область',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-    },
-    {
-      name: 'Иваново',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-    },
-    {
-      name: 'Камчатка',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-    },
-    {
-      name: 'Холмогорский район',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-    },
-    {
-      name: 'Байкал',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-    }
-]; 
+// ф-ция добавления карточки
+function cardAdd(card) {
+    elements.prepend(card);
+}
 
-
-//добавление карточек из массива
-initialCards.forEach (function (item) {
-    const elements = document.querySelector('.elements'); // поместили контейнер elements в переменную
+// ф-ция создания карточки
+function cardCreate(card) {
     const elementTemplate = document.querySelector('#element').content; // поместили template в переменную
     const addElement = elementTemplate.querySelector('.element').cloneNode(true); // клонируем содержимое template
     const addImage = addElement.querySelector('.element__image');
     const addName = addElement.querySelector('.element__name');
-    addImage.src = item.link;
-    addName.textContent = item.name;
-    elements.append(addElement);
+    
+    addImage.src = card.link;   // записали в добавляемую карточку значения link, alt и name 
+    addName.textContent = card.name;
+    addImage.alt = card.name;
 
     // лайк карточкам
     const buttonLike = addElement.querySelector('.element__like');
@@ -125,38 +101,26 @@ initialCards.forEach (function (item) {
         popupImg.src = addImage.src;
         popupImgText.textContent = addName.textContent;  
     });
+
+    return addElement; // функцияя возвращает созданную карточку
+}
+
+
+//карточки из массива
+initialCards.forEach (function (item) {
+    cardAdd(cardCreate(item)); // для каждого эл-та массива вызываем ф-цию создания карточки, затем функцию добавления карточки
 });
 
-//добавление карточек из попапа
-function addCard() {
-    const elements = document.querySelector('.elements'); // поместили контейнер elements в переменную
-    const elementTemplate = document.querySelector('#element').content; // поместили template в переменную
-    const addElement = elementTemplate.querySelector('.element').cloneNode(true); // клонируем содержимое template
-    const addImage = addElement.querySelector('.element__image');
-    const addName = addElement.querySelector('.element__name');   
-    addImage.src = urlInput.value;  // в текстовое значение profileName и profileJob записываются
-    addName.textContent = placeInput.value;    // значения из полей ввода nameInput и jobInput
-    elements.prepend(addElement);
+//карточка из попапа
+function popupCard() {
+    const card = {                  // создаем из вводимых данных объект, потому что объект принимается ф-цией создания карточки как аргумент 
+        name: placeInput.value,
+        link: urlInput.value,
+    };
     
-    // лайк карточкам
-    const buttonLike = addElement.querySelector('.element__like');
-    buttonLike.addEventListener('click', function(evt) {
-        evt.target.classList.toggle ('element__like_active');
-    });
-    // удаление карточек
-    const buttonTrash = addElement.querySelector('.element__trash');
-    buttonTrash.addEventListener('click', function() {
-        const elementItem = buttonTrash.closest('.element');
-        elementItem.remove();
-    });
-    // открытие попапа картинки
-    addImage.addEventListener ('click', function () {
-        openPopup(popupTypeImg);
-        popupImg.src = addImage.src;
-        popupImgText.textContent = addName.textContent;  
-    });
-
+    cardAdd(cardCreate(card)); // для созданного объекта вызываем ф-цию создания карточки, затем функцию добавления карточки
+    
     closePopup(popupAdd);   // чтобы попап закрылся, после нажатия на СОХРАНИТЬ, удаляем у него класс popup_opened
 }
 // на кнопку buttonCreate ставим слушатель
-buttonCreate.addEventListener('click', addCard);
+buttonCreate.addEventListener('click', popupCard);
