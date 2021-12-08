@@ -1,4 +1,4 @@
-// ф показа ошибки (конкретную форму, конкретное поле, текст ошибки)
+// ф показа ошибки 
 const showInputError = (formElement, inputElement, errorMessage, inputErrorClass, errorClass) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`); // получаем span (Находим элемент ошибки внутри самой функции)
     inputElement.classList.add(inputErrorClass); // добавляем полю класс (стили невалидного поля)
@@ -7,7 +7,7 @@ const showInputError = (formElement, inputElement, errorMessage, inputErrorClass
 };
 
 
-// ф скрытия ошибки (конкретную форму, конкретное поле)
+// ф скрытия ошибки 
 const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);  // получаем span (Находим элемент ошибки внутри самой функции)
     inputElement.classList.remove(inputErrorClass); // удаляем у поля класс (стили невалидного поля)
@@ -15,7 +15,7 @@ const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) 
     errorElement.textContent = ''; // в span добавляем пустую строку
 };
   
-// ф проверки на валидность (конкретную форму, конкретное поле)
+// ф проверки на валидность 
 const checkInputValidity = (formElement, inputElement, inputErrorClass, errorClass) => {
   if (!inputElement.validity.valid) {
     // если поле не проходит валидацию, вызываем ф-цию показа ошибки
@@ -28,7 +28,7 @@ const checkInputValidity = (formElement, inputElement, inputErrorClass, errorCla
 };
 
 
-// добавляем слушатель всем полям ввода внутри конкретной формы (formElement)
+// добавляем слушатель всем полям ввода внутри конкретной формы 
 const setEventListeners = (formElement, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass) => {
   // Находим все поля внутри формы, сделаем из них массив методом Array.from
   const inputList = Array.from(formElement.querySelectorAll(inputSelector));
@@ -70,7 +70,7 @@ const enableValidation = (settings) => {
 };
   
 // ф проверки всех полей (Она принимает массив полей формы (inputList) и возвращает true, 
-// если в нём хотя бы одно поле не валидно, и false, если все валидны.)  
+// если в нём хотя бы одно поле не валидно, и false, если все валидны)  
 const hasInvalidInput = (inputList) => {
   // проходим по этому массиву методом some
   return inputList.some((inputElement) => {
@@ -79,7 +79,7 @@ const hasInvalidInput = (inputList) => {
   }); 
 }
 
-// ф делает кнопку активной/неактивной (массив полей, кнопка)
+// ф делает кнопку активной/неактивной
 // Для этого функция hasInvalidInput проверяет валидность полей и возвращает true или false. 
 // На их основе toggleButtonState меняет состояние кнопки
 const toggleButtonState = (inputList, buttonElement, inactiveButtonClass) => {
