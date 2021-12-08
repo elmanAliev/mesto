@@ -16,20 +16,35 @@ const profileJob = document.querySelector('.profile__job');  // поместил
 const popupImg = popupTypeImg.querySelector ('.popup__img'); // поместили в переменную картинку попапа
 const popupImgText = popupTypeImg.querySelector ('.popup__img-text'); // поместили в переменную картинку попапа
 
-const formElement = document.querySelector('.popup__container');  // Находим форму в DOM
+const formEdit = document.querySelector('#form-edit');  // Находим форму редактирования профиля
+const formAdd = document.querySelector('#form-add');  // Находим форму редактирования профиля
+
 const buttonAdd = document.querySelector ('.profile__button_type_add');  // поместили в переменную кнопку добавления
 const buttonEdit = document.querySelector ('.profile__button_type_edit'); // поместили в переменную кнопку EDIT
 const buttonsClose = document.querySelectorAll ('.popup__button_type_close');  // поместили в переменную кнопку закрытия
 const buttonCreate = document.querySelector ('.popup__button_type_create');  // поместили в переменную кнопку добавления
 
+const popupOverlay = document.querySelectorAll ('.popup__overlay');
+
+// закрытие по клавише Esc
+function closeEsc(evt) {
+    if(evt.key === "Escape") {
+        const popup = document.querySelector(".popup_opened"); // находим открытый в данный момент попап 
+        closePopup(popup);                                      // и передаем его как аргумент в closePopup
+    }
+}
 
 // функция открытия попапа
 function openPopup(typePopup) {
     typePopup.classList.add ('popup_opened'); // добавляем попапу класс popup_opened    
+    // слушатель на клавише Esc
+    document.addEventListener('keydown', closeEsc);
 }
 // функция закрытия попапа
 function closePopup(typePopup) {
     typePopup.classList.remove ('popup_opened');  // удаляем у попапа класс popup_opened
+    // снимаем слушатель на клавише Esc
+    document.removeEventListener('keydown', closeEsc);
 }
 
 
@@ -46,12 +61,19 @@ buttonAdd.addEventListener ('click', function() {
     openPopup(popupAdd);
 }); 
 // на все кнопки buttonClose ставим слушатель (при клике - запуск ф-ции closePopup)
-for (i=0; i<buttonsClose.length; i++) {
-    buttonsClose[i].addEventListener ('click', function(evt) {
+buttonsClose.forEach((item) => {
+    item.addEventListener ('click', function(evt) {
         const popup = evt.target.closest('.popup')
         closePopup(popup);
     });
-}
+});
+// (при клике на overlay - запуск ф-ции closePopup)
+popupOverlay.forEach((item) => {
+    item.addEventListener ('click', function(evt) {
+        const popup = evt.target.closest('.popup')
+        closePopup(popup);
+    });
+});
 
 
 // Обработчик «отправки» формы, хотя пока
@@ -65,7 +87,7 @@ function formSubmitHandler (evt) {
     closePopup(popupEdit);    // чтобы попап закрылся, после нажатия на СОХРАНИТЬ, удаляем у него класс popup_opened
 }
 // Прикрепляем обработчик к форме: он будет следить за событием “submit” - «отправка»
-formElement.addEventListener('submit', formSubmitHandler); 
+formEdit.addEventListener('submit', formSubmitHandler); 
 
 
 // ф-ция добавления карточки
@@ -112,7 +134,9 @@ initialCards.forEach (function (item) {
 });
 
 //карточка из попапа
-function popupCard() {
+function popupCard(evt) {
+    evt.preventDefault();
+
     const card = {                  // создаем из вводимых данных объект, потому что объект принимается ф-цией создания карточки как аргумент 
         name: placeInput.value,
         link: urlInput.value,
@@ -123,4 +147,5 @@ function popupCard() {
     closePopup(popupAdd);   // чтобы попап закрылся, после нажатия на СОХРАНИТЬ, удаляем у него класс popup_opened
 }
 // на кнопку buttonCreate ставим слушатель
-buttonCreate.addEventListener('click', popupCard);
+formAdd.addEventListener('submit', popupCard);
+
