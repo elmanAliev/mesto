@@ -56,10 +56,10 @@ buttonEdit.addEventListener ('click', function() {
 }); 
 // на кнопку buttonAdd ставим слушатель (при клике - запуск ф-ции openPopup)
 buttonAdd.addEventListener ('click', function() {
-    placeInput.value = '';  // при появлении попапа поля будут пустые
-    urlInput.value = '';  // при появлении попапа поля будут пустые
+    formAdd.reset();
+    buttonCreate.classList.add ('main-button_inactive');
     openPopup(popupAdd);
-}); 
+});
 // на все кнопки buttonClose ставим слушатель (при клике - запуск ф-ции closePopup)
 buttonsClose.forEach((item) => {
     item.addEventListener ('click', function(evt) {
@@ -121,6 +121,7 @@ function cardCreate(card) {
     addImage.addEventListener ('click', function () {
         openPopup(popupTypeImg);
         popupImg.src = addImage.src;
+        popupImg.alt = addName.textContent;
         popupImgText.textContent = addName.textContent;  
     });
 
