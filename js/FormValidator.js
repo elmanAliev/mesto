@@ -1,4 +1,4 @@
-class FormValidator {
+export class FormValidator {
   constructor(settings, form) {  // принимает селектор карточки (чтобы конструктор был универсальным и мог работать с разными селекторами)
     this._form = form;
     this._input = settings.inputSelector;
@@ -49,7 +49,7 @@ class FormValidator {
     // Обойдём все поля ввода формы
     this._inputList.forEach((inputElement) => {
       // каждому полю добавим обработчик события input
-      inputElement.addEventListener('input', function () {
+      inputElement.addEventListener('input', () => {
         // Внутри колбэка вызовем checkInputValidity, передав проверяемый элемент
         this._checkInputValidity(inputElement);
 
@@ -98,21 +98,3 @@ class FormValidator {
 
 
 
-
-function forEachForm(settings) {
-  // Найдём все формы с указанным классом в DOM, сделаем из них массив методом Array.from
-  const formList = Array.from(document.querySelectorAll(settings.formSelector));
-  formList.forEach((formElement) => {
-    const form = new FormValidator (settings, formElement);
-    form.enableValidation();   
-  });
-}
-
-forEachForm({
-  formSelector: '.popup__container',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.main-button',
-  inactiveButtonClass: 'main-button_inactive',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_active'
-});

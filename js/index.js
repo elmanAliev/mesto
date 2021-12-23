@@ -1,122 +1,44 @@
-const popupEdit = document.querySelector ('.popup_type_edit'); // попап "редактирование"
-const popupAdd = document.querySelector ('.popup_type_add');  // попап "добавление"
-const popupTypeImg = document.querySelector ('.popup_type_img');  // попап "увеличенная картинка"
-
-const elements = document.querySelector('.elements'); // контейнер
-
-const nameInput = document.querySelector('.popup__input_type_name');    // поле ввода "редактирование"
-const jobInput = document.querySelector('.popup__input_type_job');      // поле ввода "редактирование"
-
-const placeInput = document.querySelector('.popup__input_type_place');  // поле ввода "добавление"
-const urlInput = document.querySelector('.popup__input_type_url');      // поле ввода "добавление"
-
-const profileName = document.querySelector('.profile__name'); // тег с классом profile__name
-const profileJob = document.querySelector('.profile__job');  // тег с классом profile__job
-
-const popupImg = popupTypeImg.querySelector ('.popup__img'); // увеличенная картинка попапа
-const popupImgText = popupTypeImg.querySelector ('.popup__img-text'); // подпись к картинке
-
-const formEdit = document.querySelector('#form-edit');  // форма редактирования профиля
-const formAdd = document.querySelector('#form-add');  //  форма добавления карточки
-
-const buttonAdd = document.querySelector ('.profile__button_type_add');  // кнопка add
-const buttonEdit = document.querySelector ('.profile__button_type_edit'); // кнопку EDIT
-const buttonsClose = document.querySelectorAll ('.popup__button_type_close');  // кнопки закрытия
-const buttonCreate = document.querySelector ('.popup__button_type_create');  // кнопку create
-
-const popupOverlay = document.querySelectorAll ('.popup__overlay');
+import { initialCards } from "./cards.js";
+import {openPopup} from "./utils.js";
+import {closePopup} from "./utils.js";
+import {Card} from "./Card.js";
+import {FormValidator} from "./FormValidator.js";
+import {
+    popupEdit,
+    popupAdd,
+    elements,
+    nameInput,
+    jobInput,
+    placeInput,
+    urlInput,
+    profileName,
+    profileJob,
+    formEdit,
+    formAdd,
+    buttonAdd,
+    buttonEdit,
+    buttonsClose,
+    buttonCreate,
+    popupOverlay,
+} from "./utils.js";
 
 
-
-class Card {
-    constructor(card, cardSelector = '#element') {  // принимает селектор карточки (чтобы конструктор был универсальным и мог работать с разными селекторами)
-      this._cardSelector = cardSelector;
-      this._name = card.name;
-      this._link = card.link;
-    }
-    
-    // метод получения темплейт эл-та
-    _getTemplate() {
-      const cardElement = document
-        .querySelector(this._cardSelector)  // найдем темплейт эл-т с переданным селектором
-        .content                            // извлекаем его содержимое 
-        .querySelector('.element')          // в содержимом найдёт элемент с классом element
-        .cloneNode(true);                   // клонируем его
-  
-      return cardElement;                   // возвращаем клонированный эл-т
-    }
-    
-    
-    // метод открытия попапа (увеличение картинки)
-    _handleOpenPopup() {
-        popupImg.src = this._link;
-        popupImg.alt = this._name
-        popupImgText.textContent = this._name  
-        openPopup(popupTypeImg)
-    }
-    // метод лайк картинкам
-    _handleLikeImg() {
-        this._element.querySelector('.element__like').classList.toggle('element__like_active');
-    }
-    // метод удаления карточки
-    _handleRemoveCard() {
-        this._element.remove();
-    }
-
-    
-    // метод добавления обработчиков
-    _setEventListeners() {
-      this._element.querySelector('.element__image').addEventListener('click', () => { // при клике на элемент
-        this._handleOpenPopup();                                                       // открываем попап
-      });
-       
-      this._element.querySelector('.element__like').addEventListener('click', () => {  // при клике вызываем лайк
-        this._handleLikeImg();                         
-      });
-      
-      this._element.querySelector('.element__trash').addEventListener('click', () => {  // при клике вызываем удаление
-        this._handleRemoveCard();                         
-      });
-    }
-
-
-    // метод, добавляющий карточку в разметку
-    generateCard() {
-        this._element = this._getTemplate(); // Запишем разметку в приватное поле _element. и Так у других элементов появится доступ к ней.
-        this._setEventListeners();           // вызываем слушатели для карточки
-        // Добавим данные
-        this._element.querySelector('.element__image').src = this._link;
-        this._element.querySelector('.element__name').textContent = this._name;
-        this._element.querySelector('.element__image').alt = this._name;
-
-        // Вернём элемент наружу
-        return this._element;
-    }
+// Для каждой формы создаем экземпляр класса FormValidator
+function formsValidation (settings) {
+    const formList = Array.from(document.querySelectorAll(settings.formSelector));
+    formList.forEach((formElement) => {
+      const form = new FormValidator (settings, formElement);
+      form.enableValidation();   
+    });
 }
-
-
-
-
-// закрытие попапа по клавише Esc
-function closeEsc(evt) {
-    if(evt.key === "Escape") {
-        const popup = document.querySelector(".popup_opened"); // находим открытый в данный момент попап 
-        closePopup(popup);                                      // и передаем его как аргумент в closePopup
-    }
-}
-
-//открытие попапа
-function openPopup(typePopup) {
-    typePopup.classList.add ('popup_opened'); // добавляем попапу класс popup_opened    
-    // слушатель на клавише Esc
-    document.addEventListener('keydown', closeEsc);
-}
-//закрытие попапа
-function closePopup(typePopup) {
-    typePopup.classList.remove ('popup_opened');  // удаляем у попапа класс popup_opened
-    // снимаем слушатель на клавише Esc
-    document.removeEventListener('keydown', closeEsc);
-}
+formsValidation ({
+    formSelector: '.popup__container',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.main-button',
+    inactiveButtonClass: 'main-button_inactive',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input-error_active'
+}); 
 
 //удаление ошибок валидации, возникающих при повторном открытии попапа
 function removeErrors (form) {
@@ -129,8 +51,6 @@ function removeErrors (form) {
         inputElement.classList.remove ('popup__input_type_error');;
     });
 }
-
-
 
 
 // ф-ция добавления карточки
@@ -174,8 +94,7 @@ function formSubmitHandler (evt) {
 }
 
 
-
-
+// СЛУШАТЕЛИ
 // на кнопку buttonEdit ставим слушатель (при клике - запуск ф-ции openPopup)
 buttonEdit.addEventListener ('click', function() {
     openPopup (popupEdit);  // в аргументе передаем тип попапа
