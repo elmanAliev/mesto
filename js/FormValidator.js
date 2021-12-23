@@ -8,6 +8,7 @@ export class FormValidator {
     this._errorClass = settings.errorClass;
     this._inputList = Array.from(this._form.querySelectorAll(this._input));
     this._buttonElement = this._form.querySelector(this._submitButton);
+    this._spanList = Array.from(this._form.querySelectorAll('.popup__input-error'));
   }
   
 
@@ -92,6 +93,16 @@ export class FormValidator {
     this._setEventListeners();
   }
   
+  //удаление ошибок валидации, возникающих при повторном открытии попапа
+  removeErrors() {
+    this._spanList.forEach((spanElement) => {
+        spanElement.textContent = "";
+    });
+    
+    this._inputList.forEach((inputElement) => {
+        inputElement.classList.remove('popup__input_type_error');;
+    });
+  }
 }
 
 
