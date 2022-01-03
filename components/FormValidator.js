@@ -1,4 +1,4 @@
-export class FormValidator {
+export default class FormValidator {
   constructor(settings, form) {  // принимает селектор карточки (чтобы конструктор был универсальным и мог работать с разными селекторами)
     this._form = form;
     this._input = settings.inputSelector;

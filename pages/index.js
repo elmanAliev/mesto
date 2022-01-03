@@ -1,6 +1,6 @@
 import { initialCards } from "../utils/cards.js";
-import {Card} from "../components/Card.js";
-import {FormValidator} from "../components/FormValidator.js";
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import Section from "../components/Section.js";
@@ -34,49 +34,17 @@ const editProfileFormValidator = new FormValidator (validationConfig, formEdit);
 addCardFormValidator.enableValidation();
 editProfileFormValidator.enableValidation();
 
+
 // создаем для каждого попапа свой экземпляр класса PopupWithForm
 const addCardPopup = new PopupWithForm (popupAdd, submitAddCardForm);
 const editProfilePopup = new PopupWithForm (popupEdit, submitEditProfileForm);
 
+// для каждого попапа вызываем слушатели
+addCardPopup.setEventListeners();
+editProfilePopup.setEventListeners();
+
+
 const scaleImagePopup = new PopupWithImage (popupTypeImg);
-
-
-
-function submitAddCardForm(evt) {
-    evt.preventDefault();
-
-    const card = [{                  // создаем из вводимых данных объект, потому что объект принимается ф-цией создания карточки как аргумент 
-        name: placeInput.value,
-        link: urlInput.value,
-    }];
-    // const cardElement = createCard(card).generateCard();
-    // addCardToDOM(cardElement); // для созданного объекта вызываем ф-цию создания карточки, затем функцию добавления карточки
-    
-    
-    const newCard = new Section({
-        items: card,
-        renderer: (item) => {
-          const cardFromPopup = new Card (item, '#element', scaleImagePopup.open);
-          const cardElement = cardFromPopup.generateCard();
-          cardSection.addItem(cardElement);
-        }
-    }, '.elements');
-
-    newCard.renderItems();
-
-
-    addCardPopup.close();   //закрываем попап
-}
-
-function submitEditProfileForm (evt) {
-    evt.preventDefault();
-    
-    
-    profileName.textContent = nameInput.value;  // в текстовое значение profileName и profileJob записываются
-    profileJob.textContent = jobInput.value;    // значения из полей ввода nameInput и jobInput
-    
-    editProfilePopup.close();   //закрываем попап
-}
 
 
 //карточки из массива
@@ -92,53 +60,38 @@ const cardSection = new Section({
 cardSection.renderItems();
 
 
+function submitAddCardForm() {
+    const card = {                  // создаем из вводимых данных объект, потому что объект принимается ф-цией создания карточки как аргумент 
+        name: placeInput.value,
+        link: urlInput.value,
+    };
+    
+    const cardFromPopup = new Card (card, '#element', scaleImagePopup.open);
+    const cardElement = cardFromPopup.generateCard();
+    cardSection.addItem(cardElement);
+    
+
+    addCardPopup.close();
+}
+
+function submitEditProfileForm () {
+    profileName.textContent = nameInput.value;  // в текстовое значение profileName и profileJob записываются
+    profileJob.textContent = jobInput.value;    // значения из полей ввода nameInput и jobInput
+    
+    editProfilePopup.close();
+}
+
 
 // СЛУШАТЕЛИ
-// на кнопку buttonAdd ставим слушатель (при клике - запуск ф-ции openPopup)
 buttonAdd.addEventListener ('click', function() {
-    formAdd.reset();
     buttonCreate.classList.add ('main-button_inactive');
     addCardFormValidator.removeErrors(); // вызываем метод удаления ошибок 
-    addCardPopup.open();
+    addCardPopup.open();    
 });
-// на кнопку buttonEdit ставим слушатель (при клике - запуск ф-ции openPopup)
+
 buttonEdit.addEventListener ('click', function() {
-    
     editProfileFormValidator.removeErrors();    // вызываем метод удаления ошибок 
-    nameInput.value = profileName.textContent;  // при клике на кнопку в значения полей ввода помещаем 
+    nameInput.value = profileName.textContent;  // в значения полей ввода помещаем 
     jobInput.value = profileJob.textContent;    // текстовые значения нах-ся в profileName и profileJob
     editProfilePopup.open();  
 }); 
-
-
-
-
-
-
-
-
-
-// // ф-ция добавления карточки
-// function addCardToDOM(card) {
-//     elements.prepend(card);
-// }
-
-// // ф-ция создания карточки
-// function createCard(card) {
-//     const newCard = new Card (card, '#element', handleCardClick);
-//     return newCard;
-// }
-
-// //карточки из массива
-// const renderElements = () => {
-//     initialCards.forEach (function (item) {
-        
-//         const cardElement = createCard(item).generateCard();
-//         addCardToDOM(cardElement); // для каждого эл-та массива вызываем ф-цию создания карточки, затем функцию добавления карточки
-//     });
-// };
-// renderElements();
-
-
-
-

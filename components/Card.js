@@ -1,4 +1,4 @@
-export class Card {
+export default class Card {
     constructor(card, cardSelector, handleCardClick) {  // принимает селектор карточки (чтобы конструктор был универсальным и мог работать с разными селекторами)
       this._cardSelector = cardSelector;
       this._name = card.name;
