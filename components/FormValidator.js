@@ -100,7 +100,7 @@ export class FormValidator {
     });
     
     this._inputList.forEach((inputElement) => {
-        inputElement.classList.remove('popup__input_type_error');;
+        inputElement.classList.remove(this._inputErrorClass);
     });
   }
 }

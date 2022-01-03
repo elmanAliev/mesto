@@ -1,15 +1,10 @@
-import {openPopup} from "./utils.js";
-import {
-    popupTypeImg,
-    popupImg,
-    popupImgText,
-} from "./constants.js";
-
 export class Card {
-    constructor(card, cardSelector = '#element') {  // принимает селектор карточки (чтобы конструктор был универсальным и мог работать с разными селекторами)
+    constructor(card, cardSelector, handleCardClick) {  // принимает селектор карточки (чтобы конструктор был универсальным и мог работать с разными селекторами)
       this._cardSelector = cardSelector;
       this._name = card.name;
       this._link = card.link;
+      this._handleCardClick = handleCardClick;
+
 
       this._cardElement = document
         .querySelector(this._cardSelector)  // найдем темплейт эл-т с переданным селектором
@@ -22,10 +17,7 @@ export class Card {
     
     // метод открытия попапа (увеличение картинки)
     _handleOpenPopup() {
-        popupImg.src = this._link;
-        popupImg.alt = this._name
-        popupImgText.textContent = this._name  
-        openPopup(popupTypeImg)
+        this._handleCardClick();
     }
     // метод лайк картинкам
     _handleLikeImg() {
@@ -39,11 +31,11 @@ export class Card {
     
     // метод добавления обработчиков
     _setEventListeners() {
-        this._image.addEventListener('click', () => { // при клике на элемент
-        this._handleOpenPopup();                                                       // открываем попап
+      this._image.addEventListener('click', () => { // при клике на элемент открываем попап
+        this._handleOpenPopup();
       });
        
-      this._cardElement.querySelector('.element__like').addEventListener('click', () => {  // при клике вызываем лайк
+      this._cardElement.querySelector('.element__like').addEventListener('click', () => {  // при клике ставим лайк
         this._handleLikeImg();                         
       });
       
