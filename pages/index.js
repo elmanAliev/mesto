@@ -4,6 +4,7 @@ import FormValidator from "../components/FormValidator.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import Section from "../components/Section.js";
+import UserInfo from "../components/UserInfo.js";
 import {
     popupEdit,
     popupAdd,
@@ -42,6 +43,9 @@ const editProfilePopup = new PopupWithForm (popupEdit, submitEditProfileForm);
 // создаем экземпляр класса PopupWithImage
 const scaleImagePopup = new PopupWithImage (popupTypeImg);
 
+// создаем экземпляр класса UserInfo
+const addUserInfo = new UserInfo ({nameSelector: '.profile__name', jobSelector: '.profile__job'});
+
 
 //карточки из массива
 const cardSection = new Section({
@@ -71,10 +75,9 @@ function submitAddCardForm() {
 }
 
 // ф-ция редактирования информации
-function submitEditProfileForm () {
-    profileName.textContent = nameInput.value;  // в текстовое значение profileName и profileJob записываются
-    profileJob.textContent = jobInput.value;    // значения из полей ввода nameInput и jobInput
-    
+function submitEditProfileForm (inputValues) {
+    addUserInfo.setUserInfo (inputValues); // добавляем данные пользователя на страницу
+
     editProfilePopup.close();
 }
 
@@ -88,8 +91,12 @@ buttonAdd.addEventListener ('click', function() {
 
 buttonEdit.addEventListener ('click', function() {
     editProfileFormValidator.removeErrors();    // вызываем метод удаления ошибок 
-    nameInput.value = profileName.textContent;  // в значения полей ввода помещаем 
-    jobInput.value = profileJob.textContent;    // текстовые значения нах-ся в profileName и profileJob
+    
+    // данные пользователя записываем в форму при открытии
+    const {name, job} = addUserInfo.getUserInfo();
+    nameInput.value = name;
+    jobInput.value = job;
+    
     editProfilePopup.open();  
 }); 
 
