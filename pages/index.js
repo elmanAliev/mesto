@@ -39,11 +39,7 @@ editProfileFormValidator.enableValidation();
 const addCardPopup = new PopupWithForm (popupAdd, submitAddCardForm);
 const editProfilePopup = new PopupWithForm (popupEdit, submitEditProfileForm);
 
-// для каждого попапа вызываем слушатели
-addCardPopup.setEventListeners();
-editProfilePopup.setEventListeners();
-
-
+// создаем экземпляр класса PopupWithImage
 const scaleImagePopup = new PopupWithImage (popupTypeImg);
 
 
@@ -60,6 +56,7 @@ const cardSection = new Section({
 cardSection.renderItems();
 
 
+// ф-ция добавления новой карточки
 function submitAddCardForm() {
     const card = {                  // создаем из вводимых данных объект, потому что объект принимается ф-цией создания карточки как аргумент 
         name: placeInput.value,
@@ -70,10 +67,10 @@ function submitAddCardForm() {
     const cardElement = cardFromPopup.generateCard();
     cardSection.addItem(cardElement);
     
-
     addCardPopup.close();
 }
 
+// ф-ция редактирования информации
 function submitEditProfileForm () {
     profileName.textContent = nameInput.value;  // в текстовое значение profileName и profileJob записываются
     profileJob.textContent = jobInput.value;    // значения из полей ввода nameInput и jobInput
@@ -95,3 +92,9 @@ buttonEdit.addEventListener ('click', function() {
     jobInput.value = profileJob.textContent;    // текстовые значения нах-ся в profileName и profileJob
     editProfilePopup.open();  
 }); 
+
+
+// для каждого попапа вызываем слушатели
+addCardPopup.setEventListeners();
+editProfilePopup.setEventListeners();
+scaleImagePopup.setEventListeners();

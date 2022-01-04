@@ -12,16 +12,13 @@ export default class Card {
         .querySelector('.element')          // в содержимом найдёт элемент с классом element
         .cloneNode(true);
       this._image = this._cardElement.querySelector('.element__image');
+      this._like = this._cardElement.querySelector('.element__like');
     }
     
     
-    // метод открытия попапа (увеличение картинки)
-    _handleOpenPopup() {
-        this._handleCardClick();
-    }
     // метод лайк картинкам
     _handleLikeImg() {
-        this._cardElement.querySelector('.element__like').classList.toggle('element__like_active');
+      this._like.classList.toggle('element__like_active');
     }
     // метод удаления карточки
     _handleRemoveCard() {
@@ -31,11 +28,12 @@ export default class Card {
     
     // метод добавления обработчиков
     _setEventListeners() {
+      const data = { name: this._name, link: this._link };
       this._image.addEventListener('click', () => { // при клике на элемент открываем попап
-        this._handleOpenPopup();
+        this._handleCardClick(data);
       });
        
-      this._cardElement.querySelector('.element__like').addEventListener('click', () => {  // при клике ставим лайк
+      this._like.addEventListener('click', () => {  // при клике ставим лайк
         this._handleLikeImg();                         
       });
       
