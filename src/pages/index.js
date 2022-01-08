@@ -1,3 +1,5 @@
+import './index.css';
+
 import { initialCards } from "../utils/cards.js";
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
@@ -9,20 +11,15 @@ import {
     popupEdit,
     popupAdd,
     popupTypeImg,
-    elements,
     nameInput,
     jobInput,
     placeInput,
     urlInput,
-    profileName,
-    profileJob,
     formEdit,
     formAdd,
     buttonAdd,
     buttonEdit,
-    buttonsClose,
     buttonCreate,
-    popupOverlay,
     validationConfig,
 } from "../utils/constants.js";
 
