@@ -15,9 +15,7 @@ export {
     formAdd,
     buttonAdd,
     buttonEdit,
-    buttonsClose,
     buttonCreate,
-    popupOverlay,
     validationConfig,
 
 };
@@ -43,12 +41,11 @@ const popupImgText = popupTypeImg.querySelector ('.popup__img-text'); // под�
 const formEdit = document.querySelector('#form-edit');  // форма редактирования профиля
 const formAdd = document.querySelector('#form-add');  //  форма добавления карточки
 
-const buttonAdd = document.querySelector ('.profile__button_type_add');  // кнопка add
-const buttonEdit = document.querySelector ('.profile__button_type_edit'); // кнопку EDIT
-const buttonsClose = document.querySelectorAll ('.popup__button_type_close');  // кнопки закрытия
-const buttonCreate = document.querySelector ('.popup__button_type_create');  // кнопку create
+const buttonAdd = document.querySelector ('.profile__button_type_add');  // кнопка ADD
+const buttonEdit = document.querySelector ('.profile__button_type_edit'); // кнопка EDIT
 
-const popupOverlay = document.querySelectorAll ('.popup__overlay');
+const buttonCreate = document.querySelector ('.popup__button_type_create');  // кнопка CREATE
+
 
 const validationConfig = {
     inputSelector: '.popup__input',

@@ -8,7 +8,6 @@ export default class FormValidator {
     this._errorClass = settings.errorClass;
     this._inputList = Array.from(this._form.querySelectorAll(this._input));
     this._buttonElement = this._form.querySelector(this._submitButton);
-    this._spanList = Array.from(this._form.querySelectorAll('.popup__input-error'));
   }
   
 
@@ -78,9 +77,11 @@ export default class FormValidator {
     if (this._hasInvalidInput()) {
       // сделай кнопку неактивной
       this._buttonElement.classList.add(this._inactiveButtonClass);
+      this._buttonElement.disabled = true;
     } else {
       // иначе сделай кнопку активной
       this._buttonElement.classList.remove(this._inactiveButtonClass); 
+      this._buttonElement.disabled = false;
     } 
   }
   
@@ -95,12 +96,9 @@ export default class FormValidator {
   
   //удаление ошибок валидации, возникающих при повторном открытии попапа
   removeErrors() {
-    this._spanList.forEach((spanElement) => {
-        spanElement.textContent = "";
-    });
-    
+    this._toggleButtonState(); 
     this._inputList.forEach((inputElement) => {
-        inputElement.classList.remove(this._inputErrorClass);
+        this._hideInputError(inputElement);
     });
   }
 }
