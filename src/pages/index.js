@@ -17,6 +17,8 @@ import {
     validationConfig,
 } from "../utils/constants.js";
 
+console.log(buttonAdd)
+
 
 // создаем для каждой формы свой валидатор
 const addCardFormValidator = new FormValidator (validationConfig, formAdd);
