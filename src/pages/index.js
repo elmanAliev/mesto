@@ -17,7 +17,7 @@ import {
     validationConfig,
 } from "../utils/constants.js";
 
-console.log(buttonAdd)
+console.log('тест')
 
 
 // создаем для каждой формы свой валидатор
