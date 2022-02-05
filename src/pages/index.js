@@ -108,15 +108,6 @@ const cardSection = new Section({
 }, '.elements');
 cardSection.renderItems();
 
-// получение и отрисовка карточек с сервера
-api.getInitialCards()
-    .then((res) => {
-        res.forEach(obj => cardSection.addItem(createCard(obj)));
-    })
-    .catch((err) => {
-        console.log(`Невозможно отобразить карточки с сервера ${err}`);
-    });
-
 //добавление новой карточки
 function submitAddCardForm(inputValues) {
     const card = {                  // создаем из вводимых данных объект, потому что объект принимается ф-цией создания карточки как аргумент 
@@ -147,7 +138,7 @@ function submitDeleteCard(card) {
 
 
 //----------------------------------------------------------------------------------
-// получение информации о пользователе
+// получение информации о пользователе и карточек с сервера
 api.getUserInfo()
     .then((res) => {
         userInfo.setUserInfo({
@@ -159,7 +150,18 @@ api.getUserInfo()
     })
     .catch((err) => {
         console.log(`Невозможно получить информацию о пользователе ${err}`);
-    });
+    })
+    .finally(() => {
+        api.getInitialCards()
+            .then((res) => {
+                res.forEach(obj => cardSection.addItem(createCard(obj)));
+            })
+            .catch((err) => {
+                console.log(`Невозможно отобразить карточки с сервера ${err}`);
+            })
+    })
+       
+    
 
 // редактирование информации о пользователе
 function submitEditProfileForm (inputValues) {
