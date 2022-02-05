@@ -11,8 +11,8 @@ export default class Section {
     }
 
     // метод, который отвечает за отрисовку всех элементов
-    renderItems() {      
-      this._renderedItems.forEach(item => {
+    renderItems(arrayOfCards) { 
+      arrayOfCards.forEach(item => {
         this._renderer(item);
       });
     }

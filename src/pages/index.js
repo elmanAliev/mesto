@@ -106,7 +106,7 @@ const cardSection = new Section({
       cardSection.addItem(createCard(item));
     }
 }, '.elements');
-cardSection.renderItems();
+// cardSection.renderItems();
 
 //добавление новой карточки
 function submitAddCardForm(inputValues) {
@@ -118,48 +118,70 @@ function submitAddCardForm(inputValues) {
     api.postNewCard(card)
         .then((card) => {
             cardSection.addItem(createCard(card));
-            buttonCreate.textContent = 'Создать';
+            addCardPopup.close();  
         })
         .catch((err) => {
             console.log(`Невозможно добавить карточку ${err}`);
-        });
-    addCardPopup.close();
+        })
+        .finally(() => {
+            buttonCreate.textContent = 'Создать';
+        });   
 }
 
 // удаление карточки
 function submitDeleteCard(card) {
     api.deleteCard(card.getCardID())
-        .then(() => card.removeCard())
+        .then(() => {
+            card.removeCard();
+            confirmPopup.close();
+        })
         .catch((err) => {
             console.log(`Невозможно удалить карточку ${err}`);
-        });
-    confirmPopup.close();
+        });   
 } 
 
 
 //----------------------------------------------------------------------------------
-// получение информации о пользователе и карточек с сервера
-api.getUserInfo()
-    .then((res) => {
-        userInfo.setUserInfo({
-            name: res.name,
-            job: res.about,
-            avatar: res.avatar
-        });
-        userInfo.setUserID(res._id);
+// получение информации о пользователес сервера
+const promiseGetUserInfo = api.getUserInfo()
+    .then((userInfoObject) => { 
+        return userInfoObject;
+        // userInfo.setUserInfo({
+        //     name: res.name,
+        //     job: res.about,
+        //     avatar: res.avatar
+        // });
+        // userInfo.setUserID(res._id);
     })
     .catch((err) => {
         console.log(`Невозможно получить информацию о пользователе ${err}`);
+    });
+
+// получение карточек с сервера
+const promiseGetInitialCards = api.getInitialCards()
+    .then((cardsArray) => {
+        return cardsArray
+        // cardSection.renderItems(res);   
     })
-    .finally(() => {
-        api.getInitialCards()
-            .then((res) => {
-                res.forEach(obj => cardSection.addItem(createCard(obj)));
-            })
-            .catch((err) => {
-                console.log(`Невозможно отобразить карточки с сервера ${err}`);
-            })
+    .catch((err) => {
+        console.log(`Невозможно отобразить карточки с сервера ${err}`);
     })
+
+Promise.all([promiseGetUserInfo, promiseGetInitialCards])
+    .then(([userInfoObject, cardsArray]) => {
+        // используем полученную информацию о пользователе
+        userInfo.setUserInfo({
+            name: userInfoObject.name,
+            job: userInfoObject.about,
+            avatar: userInfoObject.avatar
+        });
+        userInfo.setUserID(userInfoObject._id);
+        // отрисовываем полученные карточки
+        cardSection.renderItems(cardsArray); 
+    })
+    .catch((err) => {
+        console.log(`Невозможно загрузить информацию с сервера ${err}`);
+    }); 
        
     
 
@@ -173,11 +195,13 @@ function submitEditProfileForm (inputValues) {
                 job: res.about,
                 avatar: res.avatar,
             });
-            buttonSaveInfo.textContent = 'Сохранить';
             editProfilePopup.close();
         })
         .catch((err) => {
             console.log(`Невозможно изменить информацию о пользователе ${err}`);
+        })
+        .finally(() => {
+            buttonSaveInfo.textContent = 'Сохранить';
         });
 }
 
@@ -191,11 +215,13 @@ function submitEditAvatarForm (inputValues) {
                 job: res.about,
                 avatar: res.avatar,
             });
-            buttonSaveAvatar.textContent = 'Сохранить'
             editAvatarPopup.close();
         })
         .catch((err) => {
             console.log(`Невозможно загрузить аватар на сервер ${err}`);
+        })
+        .finally(() => {
+            buttonSaveAvatar.textContent = 'Сохранить';
         });
 }
 
