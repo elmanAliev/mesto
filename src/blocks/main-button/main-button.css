@@ -1,4 +1,4 @@
-/* .popup__button_type_save {
+.main-button {
     width: 100%;
     height: 50px;
     background-color: black;
@@ -11,15 +11,12 @@
     border-radius: 2px;
     transition: opacity 0.5s linear;
 }
-.popup__button_type_save:hover {
+.main-button:hover {
     opacity: 0.8;
 }
 @media screen and (max-width: 767px) {
-    .popup__button_type_save {
+    .main-button {
         font-size: 14px;
         line-height: 17px;
     }
-} */
-
-
-
+}

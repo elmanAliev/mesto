@@ -2,6 +2,8 @@ export {
     popupEdit,
     popupAdd,
     popupTypeImg,
+    popupConfirm,
+    popupAvatar,
     elements,
     nameInput,
     jobInput,
@@ -13,16 +15,22 @@ export {
     popupImgText,
     formEdit,
     formAdd,
+    buttonSaveInfo,
+    formsaveAvatar,
     buttonAdd,
     buttonEdit,
     buttonCreate,
+    buttonSaveAvatar,
+    buttonConfirm,
+    buttonEditAvatar,
     validationConfig,
-
 };
 
 const popupEdit = document.querySelector ('.popup_type_edit'); // попап "редактирование"
 const popupAdd = document.querySelector ('.popup_type_add');  // попап "добавление"
 const popupTypeImg = document.querySelector ('.popup_type_img');  // попап "увеличенная картинка"
+const popupConfirm = document.querySelector ('.popup_type_confirm'); // попап "подтверждение"
+const popupAvatar = document.querySelector ('.popup_type_avatar'); // попап "подтверждение"
 
 const elements = document.querySelector('.elements'); // контейнер
 
@@ -40,11 +48,15 @@ const popupImgText = popupTypeImg.querySelector ('.popup__img-text'); // под�
 
 const formEdit = document.querySelector('#form-edit');  // форма редактирования профиля
 const formAdd = document.querySelector('#form-add');  //  форма добавления карточки
+const formsaveAvatar = document.querySelector('#form-save-avatar');  //  форма добавления карточки
 
-const buttonAdd = document.querySelector ('.profile__button_type_add');  // кнопка ADD
-const buttonEdit = document.querySelector ('.profile__button_type_edit'); // кнопка EDIT
-
-const buttonCreate = document.querySelector ('.popup__button_type_create');  // кнопка CREATE
+const buttonAdd = document.querySelector ('.profile__button_type_add');  
+const buttonEdit = document.querySelector ('.profile__button_type_edit'); 
+const buttonCreate = document.querySelector ('.popup__button_type_create');
+const buttonSaveInfo = document.querySelector ('.popup__button_type_save');
+const buttonSaveAvatar = document.querySelector ('.popup__button_type_save-avatar');
+const buttonConfirm = document.querySelector ('.popup__button_type_confirm');
+const buttonEditAvatar = document.querySelector ('.profile__image');
 
 
 const validationConfig = {

@@ -13,10 +13,12 @@
     </header>
     <main class="content">
       <section class="profile">
-        <img src="<%=require('./images/Avatar.jpg')%>" alt="Фото пользователя" class="profile__image">
+        <div class="profile__avatar">
+          <img src="" alt="Фото пользователя" class="profile__image">
+        </div>
         <div class="profile__info">
           <div class="profile__container">
-            <h1 class="profile__name">Жак-Ив КустоКусто</h1>
+            <h1 class="profile__name">Жак-Ив Кусто</h1>
             <button class="profile__button profile__button_type_edit" type="button"></button>
           </div>
           <p class="profile__job">Исследователь океана</p>
@@ -73,6 +75,28 @@
         <p class="popup__img-text"></p>
       </div>
     </div>
+    <div class="popup popup_type_confirm">
+      <div class="popup__overlay"></div>
+      <form class="popup__container"> 
+        <button class="popup__button popup__button_type_close" type="button"></button>    
+        <h2 class="popup__title">Вы уверены</h2>      
+        <button class="popup__button popup__button_type_confirm main-button">Да</button>
+      </form> 
+    </div>
+    <div class="popup popup_type_avatar">
+      <div class="popup__overlay"></div>
+      <form id="form-save-avatar" class="popup__container" name="add" novalidate>
+        <button class="popup__button popup__button_type_close" type="button"></button> 
+        <h2 class="popup__title">Обновить аватар</h2>      
+        <fieldset class="popup__info">
+          <div class="popup__info-item">
+            <input id="url-input" class="popup__input popup__input_type_url" type="url" name="url" placeholder="Ссылка на картинку" required>
+            <span class="url-input-error popup__input-error"></span>
+          </div>
+        </fieldset>
+        <button class="popup__button popup__button_type_save-avatar main-button">Сохранить</button>
+      </form>
+    </div>
   </div>
   <template id="element">
     <div class="element">
@@ -80,7 +104,10 @@
       <img src="#" alt="" class="element__image">
       <div class="element__info">
         <h2 class="element__name"></h2>
-        <button class="element__like" type="button"></button>
+        <div class="element__wrapper">
+          <button class="element__like" type="button"></button>
+          <span class="element__likes-number"></span>
+        </div>
       </div>
     </div>
   </template>
